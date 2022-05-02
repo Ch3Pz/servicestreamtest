@@ -13,8 +13,8 @@ const MovieList = (props) => {
         <table className="w-full">
           <thead>
             <tr className="bg-slate-100 border p-1">
-              <th className="p-1 text-left font-bold text-lg w-2/3"><button onClick={() => {onSort('Title')}}>Title</button>{sortBy == "Title" && <CaretDown className="inline-block h-3 w-3"/>}</th>
-              <th className="p-1 text-left font-bold text-lg w-1/3"><button onClick={() => {onSort('Year')}}>Year</button>{sortBy == "Year" && <CaretDown className="inline-block h-3 w-3"/>}</th>
+              <th className="p-1 text-left font-bold text-lg w-2/3"><button onClick={() => {onSort('Title')}}>Title</button>{sortBy === "Title" && <CaretDown className="inline-block h-3 w-3"/>}</th>
+              <th className="p-1 text-left font-bold text-lg w-1/3"><button onClick={() => {onSort('Year')}}>Year</button>{sortBy === "Year" && <CaretDown className="inline-block h-3 w-3"/>}</th>
             </tr>
           </thead>
           <tbody>
