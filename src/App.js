@@ -10,7 +10,7 @@ function App() {
     movies: [],
     page: 1,
     totalPages: 1,
-    sortBy: 'Title',
+    sortBy: '',
     searchTerm: '',
     results: []
   })
@@ -32,8 +32,10 @@ function App() {
   }
 
   const handleOnSort = (sortby) => {
-    const sorted = sort(ascend(prop(sortby)), state.movies);
-    setState({...state, sortBy: sortby, results: sorted});
+    if ( sortby !== '' ) {
+      const sorted = sort(ascend(prop(sortby)), state.movies);
+      setState({...state, sortBy: sortby, results: sorted});
+    }
   }
 
   const fetchMovies = async () => {
@@ -47,7 +49,10 @@ function App() {
       <div className="container mx-auto">
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold underline mt-4 mb-4">
-            Movie List Sorted by {state.sortBy}
+            Movie List
+            {state.sortBy && (
+              <span className="ml-4">Sorted by {state.sortBy}</span>
+            )}
           </h1>
           <input type="text" className="float-right" placeholder="Search..." value={state.searchTerm} onChange={(e)=>setState({...state, searchTerm: e.target.value})}/>
         </div>
