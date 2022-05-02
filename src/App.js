@@ -8,12 +8,12 @@ function App() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [sortBy, setSortBy] = useState('Title');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     (async () => {
       const {data} = await axios(`https://jsonmock.hackerrank.com/api/movies/search/?page=${page}`);
 
-      console.log(data);
       setTotalPages(data.total_pages);
       setMovies(data.data);
     })();
@@ -40,9 +40,12 @@ function App() {
   return (
     <>
       <div className="container mx-auto">
-        <h1 className="text-3xl font-bold underline mt-4 mb-4">
-          Movie List Sorted by {sortBy}
-        </h1>
+        <div className="flex justify-between">
+          <h1 className="text-3xl font-bold underline mt-4 mb-4">
+            Movie List Sorted by {sortBy}
+          </h1>
+          <input type="text" className="float-right" placeholder="Search..." value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)}/>
+        </div>
         <MovieList movies={movies} onSort={handleOnSort} sortBy={sortBy}/>
         <div className="flex space-x-4">
           <button onClick={( () => setPage(1) )}>First</button>
