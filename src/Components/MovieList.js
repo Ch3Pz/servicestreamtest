@@ -1,10 +1,21 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import CaretDown from "../svgs/CaretDown";
+import { useState } from "react";
 
 
 const MovieList = (props) => {
   const { movies, sortBy, onSort } = props;
+  const [state, setState] = useState({
+    highlighted: [],
+  });
+
+  const handleRowClick = (uuid) => {
+    const highlighted = state.highlighted.includes(uuid)
+      ? state.highlighted.filter((id) => id !== uuid)
+      : [...state.highlighted, uuid];
+    console.log(highlighted);
+    setState({ highlighted });
+  }
 
   return (
     <>
@@ -18,12 +29,18 @@ const MovieList = (props) => {
             </tr>
           </thead>
           <tbody>
-          {movies.map(movie => (
-            <tr key={uuidv4()} className="hover:bg-yellow-100 border p-1">
-              <td className="p-1 w-2/3">{movie.Title}</td>
-              <td className="p-1 w-1/3">{movie.Year}</td>
-            </tr>
-          ))}
+          {movies.map(movie => 
+            {
+              const uuid = movie.imdbID;
+              return (
+                <tr key={uuid} className={`hover:bg-yellow-100 border p-1 ${state.highlighted.includes(uuid) ? 'bg-red-200' : ''}`} onClick={() => handleRowClick(uuid)}>
+                  <td className="p-1 w-2/3">{movie.Title}</td>
+                  <td className="p-1 w-1/3">{movie.Year}</td>
+                </tr>
+              )
+            }
+            )
+          }
           </tbody>
         </table>
       )}
