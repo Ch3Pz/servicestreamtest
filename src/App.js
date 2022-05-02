@@ -16,11 +16,7 @@ function App() {
   })
 
   useEffect(() => {
-    (async () => {
-      const {data} = await axios(`https://jsonmock.hackerrank.com/api/movies/search/?page=${state.page}`);
-
-      setState({...state, movies: data.data, totalPages: data.total_pages, results: data.data});
-    })();
+    fetchMovies();
   }, [state.page]);
 
   const handleNextPageClick = () => {
@@ -38,6 +34,12 @@ function App() {
   const handleOnSort = (sortby) => {
     const sorted = sort(ascend(prop(sortby)), state.movies);
     setState({...state, sortBy: sortby, results: sorted});
+  }
+
+  const fetchMovies = async () => {
+    const {data} = await axios(`https://jsonmock.hackerrank.com/api/movies/search/?page=${state.page}`);
+
+    setState({...state, movies: data.data, totalPages: data.total_pages, results: data.data});
   }
 
   return (
