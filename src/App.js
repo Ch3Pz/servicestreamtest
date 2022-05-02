@@ -6,20 +6,28 @@ import axios from 'axios';
 function App() {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     (async () => {
       const {data} = await axios(`https://jsonmock.hackerrank.com/api/movies/search/?page=${page}`);
+
+      console.log(data);
+      setTotalPages(data.total_pages);
       setMovies(data.data);
     })();
-  }, [movies, page]);
+  }, [page]);
 
   const handleNextPageClick = () => {
-    setPage(page + 1);
+    if(page < totalPages) {
+      setPage(page + 1);
+    }
   }
 
   const handlePreviousPageClick = () => {
-    setPage(page - 1);
+    if(page > 1) {
+      setPage(page - 1);
+    }
   }
 
   return (
@@ -30,9 +38,11 @@ function App() {
         </h1>
         <MovieList movies={movies}/>
         <div className="flex space-x-4">
-          <button onClick={handlePreviousPageClick}>Prev</button>
+          <button onClick={( () => setPage(1) )}>First</button>
+          <button onClick={(handlePreviousPageClick)}>Prev</button>
           <div className="mt-4 mb-4 text-right">Page {page}</div>
           <button onClick={handleNextPageClick}>Next</button>
+          <button onClick={( () => setPage(totalPages) )}>Last</button>
         </div>
       </div>
     </>

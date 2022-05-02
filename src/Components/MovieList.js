@@ -9,11 +9,11 @@ const MovieList = (props) => {
     <>
       {movies.length === 0 && <div>Loding movies...</div>}
       {movies.length > 0 && (
-        <table>
+        <table className="w-full">
           <thead>
             <tr>
-              <th className="text-left font-bold">Title</th>
-              <th className="text-left font-bold">Year</th>
+              <th className="text-left font-bold w-2/3">Title</th>
+              <th className="text-left font-bold w-1/3">Year</th>
             </tr>
           </thead>
           <tbody>
