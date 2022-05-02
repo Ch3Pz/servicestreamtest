@@ -7,6 +7,7 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [sortBy, setSortBy] = useState('Title');
 
   useEffect(() => {
     (async () => {
@@ -30,13 +31,19 @@ function App() {
     }
   }
 
+  const handleOnSort = (sortby) => {
+    setSortBy(sortby);
+
+    // TODO SORTING MECHANISM
+  }
+
   return (
     <>
       <div className="container mx-auto">
         <h1 className="text-3xl font-bold underline mt-4 mb-4">
-          Movie List
+          Movie List Sorted by {sortBy}
         </h1>
-        <MovieList movies={movies}/>
+        <MovieList movies={movies} onSort={handleOnSort} sortBy={sortBy}/>
         <div className="flex space-x-4">
           <button onClick={( () => setPage(1) )}>First</button>
           <button onClick={(handlePreviousPageClick)}>Prev</button>
