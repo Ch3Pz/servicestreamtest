@@ -4,35 +4,38 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function App() {
-  const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [sortBy, setSortBy] = useState('Title');
-  const [searchTerm, setSearchTerm] = useState('');
+
+  const [state, setState] = useState({
+    movies: [],
+    page: 1,
+    totalPages: 1,
+    sortBy: 'Title',
+    searchTerm: '',
+    results: []
+  })
 
   useEffect(() => {
     (async () => {
-      const {data} = await axios(`https://jsonmock.hackerrank.com/api/movies/search/?page=${page}`);
+      const {data} = await axios(`https://jsonmock.hackerrank.com/api/movies/search/?page=${state.page}`);
 
-      setTotalPages(data.total_pages);
-      setMovies(data.data);
+      setState({...state, movies: data.data, totalPages: data.total_pages, results: data.data});
     })();
-  }, [page]);
+  }, [state.page]);
 
   const handleNextPageClick = () => {
-    if(page < totalPages) {
-      setPage(page + 1);
+    if(state.page < state.totalPages) {
+      setState({...state, page: state.page + 1});
     }
   }
 
   const handlePreviousPageClick = () => {
-    if(page > 1) {
-      setPage(page - 1);
+    if(state.page > 1) {
+      setState({...state, page: state.page - 1});
     }
   }
 
   const handleOnSort = (sortby) => {
-    setSortBy(sortby);
+    setState({...state, sortBy: state.sortby});
 
     // TODO SORTING MECHANISM
   }
@@ -42,17 +45,17 @@ function App() {
       <div className="container mx-auto">
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold underline mt-4 mb-4">
-            Movie List Sorted by {sortBy}
+            Movie List Sorted by {state.sortBy}
           </h1>
-          <input type="text" className="float-right" placeholder="Search..." value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)}/>
+          <input type="text" className="float-right" placeholder="Search..." value={state.searchTerm} onChange={(e)=>setState({...state, searchTerm: e.target.value})}/>
         </div>
-        <MovieList movies={movies} onSort={handleOnSort} sortBy={sortBy}/>
+        <MovieList movies={state.results} onSort={handleOnSort} sortBy={state.sortBy}/>
         <div className="flex space-x-4">
-          <button onClick={( () => setPage(1) )}>First</button>
+          <button onClick={( () => setState({...state, page: 1}) )}>First</button>
           <button onClick={(handlePreviousPageClick)}>Prev</button>
-          <div className="mt-4 mb-4 text-right">Page {page}</div>
+          <div className="mt-4 mb-4 text-right">Page {state.page}</div>
           <button onClick={handleNextPageClick}>Next</button>
-          <button onClick={( () => setPage(totalPages) )}>Last</button>
+          <button onClick={( () => setState({...state, page: state.totalPages }) )}>Last</button>
         </div>
       </div>
     </>
