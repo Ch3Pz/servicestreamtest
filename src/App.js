@@ -2,6 +2,7 @@ import './App.css';
 import MovieList from './Components/MovieList';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ascend, prop, sort } from 'ramda';
 
 function App() {
 
@@ -35,9 +36,8 @@ function App() {
   }
 
   const handleOnSort = (sortby) => {
-    setState({...state, sortBy: state.sortby});
-
-    // TODO SORTING MECHANISM
+    const sorted = sort(ascend(prop(sortby)), state.movies);
+    setState({...state, sortBy: sortby, results: sorted});
   }
 
   return (
