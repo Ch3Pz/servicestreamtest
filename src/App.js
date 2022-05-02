@@ -44,6 +44,11 @@ function App() {
     setState({...state, movies: data.data, totalPages: data.total_pages, results: data.data});
   }
 
+  const onSearchTermChange = (e) => {
+    const filtered = state.movies.filter(movie => movie.Title.toLowerCase().includes(e.target.value.toLowerCase()));
+    setState({...state, searchTerm: e.target.value, results: filtered})
+  }
+
   return (
     <>
       <div className="container mx-auto">
@@ -54,7 +59,7 @@ function App() {
               <span className="ml-4">Sorted by {state.sortBy}</span>
             )}
           </h1>
-          <input type="text" className="float-right" placeholder="Search..." value={state.searchTerm} onChange={(e)=>setState({...state, searchTerm: e.target.value})}/>
+          <input type="text" className="float-right" placeholder="Search..." value={state.searchTerm} onChange={onSearchTermChange}/>
         </div>
         <MovieList movies={state.results} onSort={handleOnSort} sortBy={state.sortBy}/>
         <div className="flex space-x-4">
